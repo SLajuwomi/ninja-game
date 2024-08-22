@@ -14,5 +14,11 @@ class PhysicsEntity:
         self.pos[0] += frame_movement[0]
         self.pos[1] += frame_movement[1]
 
+        # modifies downard movement (y-axis)
+        # terminal velocity - maximum velocity it can reach while falling
+        # min caps how fast you can fall while falling
+        #                      max   min
+        self.velocity[1] = min(5, self.velocity[1] + 0.1)
+
     def render(self, surface):
         surface.blit(self.game.assets['player'], self.pos)
