@@ -5,6 +5,7 @@ import sys
 from scripts.utils import load_image, load_images
 from scripts.entities import PhysicsEntity
 from scripts.tilemap import Tilemap
+from scripts.clouds import Clouds
 
 class Game:
      def __init__(self):
@@ -22,12 +23,16 @@ class Game:
           self.movement = [False, False]
 
           self.assets = {
-          'decor': load_images('tiles/decor'),
-          'grass': load_images('tiles/grass'),
-          'large_decor': load_images('tiles/large_decor'),
-          'stone': load_images('tiles/stone'),
-          'player': load_image('entities/player.png')
+               'decor': load_images('tiles/decor'),
+               'grass': load_images('tiles/grass'),
+               'large_decor': load_images('tiles/large_decor'),
+               'stone': load_images('tiles/stone'),
+               'player': load_image('entities/player.png'),
+               'background': load_image('background.png'),
+               'clouds': load_images('clouds')
           }
+
+          self.clouds = Clouds(self.assets['clouds'], count=16)
 
           print(self.assets)
 
@@ -41,7 +46,11 @@ class Game:
 
      def run(self):
           while True:
-               self.display.fill((14, 219, 248))
+               # Fills the screen with a solid color
+               # self.display.fill((14, 219, 248))
+
+               # Blits the background image to the display
+               self.display.blit(self.assets['background'], (0, 0))
 
                # having the camera follow the player
                # camera is set by default to top left of screen so we have to subtract the width of the display from the player position to center the camera
@@ -56,6 +65,8 @@ class Game:
                # # have to apply camera to both tilemap and player
                # self.scroll[0] += 1
 
+               self.clouds.update()
+               self.clouds.render(self.display, offset=render_scroll)
 
                self.tilemap.render(self.display, offset=render_scroll)
 
